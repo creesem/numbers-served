@@ -1,5 +1,6 @@
 package com.canopy.numbers.served.application.views.reports;
 
+import com.canopy.numbers.served.application.services.CanopySchoolFormService;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -10,10 +11,10 @@ public class FormsView extends VerticalLayout {
 	private static VerticalLayout caresForm;
 	private static VerticalLayout canopySchoolForm;
 
-	public FormsView() {
+	public FormsView(CanopySchoolFormService canopySchoolFormService) {
 
 		caresForm = new VerticalLayout();
-		canopySchoolForm = new CanopySchoolFormView();
+		canopySchoolForm = new CanopySchoolFormView(canopySchoolFormService);
 
 		Tabs tabs = createTabs();
 		add(tabs, caresForm, canopySchoolForm);
