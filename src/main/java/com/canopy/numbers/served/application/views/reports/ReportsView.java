@@ -1,16 +1,14 @@
 package com.canopy.numbers.served.application.views.reports;
 
-import com.canopy.numbers.served.application.views.MainLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-@Route(value = "reports", layout = MainLayout.class)
-@AnonymousAllowed
+@Route("reports")
 public class ReportsView extends VerticalLayout {
+
 	private static final long serialVersionUID = -4938342493569169286L;
 
 	public ReportsView() {
@@ -23,7 +21,7 @@ public class ReportsView extends VerticalLayout {
 		reportTabs.setWidthFull();
 
 		// Create containers for content
-		Div caresContent = createCaresReportLayout();
+		Div caresContent = new CaresReportLayout().createLayout();
 		Div tcsContent = createTcsReportLayout();
 
 		// Wrap the content in a layout
@@ -39,14 +37,6 @@ public class ReportsView extends VerticalLayout {
 
 		// Add components to layout
 		add(reportTabs, caresContent, tcsContent);
-	}
-
-	private Div createCaresReportLayout() {
-		Div layout = new Div();
-		layout.setText("CARES Report Layout"); // Placeholder text
-		layout.setSizeFull();
-		layout.getStyle().set("background-color", "#f9f9f9");
-		return layout;
 	}
 
 	private Div createTcsReportLayout() {

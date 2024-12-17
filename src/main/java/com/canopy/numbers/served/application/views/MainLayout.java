@@ -8,6 +8,7 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 
 import com.canopy.numbers.served.application.data.User;
 import com.canopy.numbers.served.application.security.AuthenticatedUser;
+import com.canopy.numbers.served.application.views.reports.FormsView;
 import com.canopy.numbers.served.application.views.reports.ReportsView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -39,6 +40,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 @Layout
 @AnonymousAllowed
 public class MainLayout extends AppLayout {
+	private static final long serialVersionUID = 995836277857772709L;
 
 	private H1 viewTitle;
 
@@ -87,6 +89,7 @@ public class MainLayout extends AppLayout {
 
 		});
 
+		nav.addItem(new SideNavItem("Forms", FormsView.class, LineAwesomeIcon.HAND_PAPER.create()));
 		nav.addItem(new SideNavItem("Reports", ReportsView.class, LineAwesomeIcon.CHART_PIE_SOLID.create()));
 
 		return nav;
