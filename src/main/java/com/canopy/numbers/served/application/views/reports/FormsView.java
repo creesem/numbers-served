@@ -13,7 +13,7 @@ public class FormsView extends VerticalLayout {
 	public FormsView() {
 
 		caresForm = new VerticalLayout();
-		canopySchoolForm = new VerticalLayout();
+		canopySchoolForm = new CanopySchoolFormView();
 
 		Tabs tabs = createTabs();
 		add(tabs, caresForm, canopySchoolForm);
