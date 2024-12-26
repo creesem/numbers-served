@@ -2,15 +2,11 @@ package com.canopy.numbers.served.application.data;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class CaresForm {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -26,6 +22,10 @@ public class CaresForm {
 	@ManyToOne
 	@JoinColumn(name = "reason_id", nullable = false)
 	private CaresFormReason reasonForVisit;
+
+	@ManyToOne
+	@JoinColumn(name = "student_id", referencedColumnName = "id", nullable = true)
+	private NumbersServedStudent student;
 
 	// Getters and Setters
 	public Long getId() {
@@ -74,5 +74,13 @@ public class CaresForm {
 
 	public void setReasonForVisit(CaresFormReason reasonForVisit) {
 		this.reasonForVisit = reasonForVisit;
+	}
+
+	public NumbersServedStudent getStudent() {
+		return student;
+	}
+
+	public void setStudent(NumbersServedStudent student) {
+		this.student = student;
 	}
 }

@@ -1,6 +1,7 @@
 package com.canopy.numbers.served.application.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,6 @@ public interface CaresFormRepository extends JpaRepository<CaresForm, Long> {
 	List<CaresForm> findByLocation(CaresFormLocation location);
 
 	List<CaresForm> findByReasonForVisit(CaresFormReason reason);
+
+	Optional<CaresForm> findByAssociatedStudent(String associatedStudent);
 }

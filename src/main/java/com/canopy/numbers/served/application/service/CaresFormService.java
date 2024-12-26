@@ -1,6 +1,7 @@
 package com.canopy.numbers.served.application.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,4 +37,14 @@ public class CaresFormService {
 
 		return caresFormRepository.save(form);
 	}
+
+	public CaresForm save(CaresForm caresForm) {
+		return caresFormRepository.save(caresForm);
+	}
+
+	public CaresForm findByAssociatedStudent(String associatedStudent) {
+		Optional<CaresForm> caresForm = caresFormRepository.findByAssociatedStudent(associatedStudent);
+		return caresForm.orElse(null);
+	}
+
 }

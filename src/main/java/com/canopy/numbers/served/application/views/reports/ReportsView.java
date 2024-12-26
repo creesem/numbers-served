@@ -1,7 +1,5 @@
 package com.canopy.numbers.served.application.views.reports;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;

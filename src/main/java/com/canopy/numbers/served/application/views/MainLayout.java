@@ -9,6 +9,7 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 import com.canopy.numbers.served.application.data.User;
 import com.canopy.numbers.served.application.security.AuthenticatedUser;
 import com.canopy.numbers.served.application.views.reports.FormsView;
+import com.canopy.numbers.served.application.views.reports.NumbersServedStudentUploadView;
 import com.canopy.numbers.served.application.views.reports.ReportsView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -27,6 +28,7 @@ import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.Layout;
+import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -91,6 +93,10 @@ public class MainLayout extends AppLayout {
 
 		nav.addItem(new SideNavItem("Forms", FormsView.class, LineAwesomeIcon.HAND_PAPER.create()));
 		nav.addItem(new SideNavItem("Reports", ReportsView.class, LineAwesomeIcon.CHART_PIE_SOLID.create()));
+		nav.addItem(new SideNavItem("Upload Students", NumbersServedStudentUploadView.class,
+				LineAwesomeIcon.UPLOAD_SOLID.create()));
+
+		// Add link to the Upload View
 
 		return nav;
 	}
