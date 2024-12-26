@@ -1,11 +1,23 @@
 package com.canopy.numbers.served.application.services;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.canopy.numbers.served.application.data.CanopySchoolForm;
+import com.canopy.numbers.served.application.repository.CanopySchoolFormRepository;
 
-public interface CanopySchoolFormService {
-	List<CanopySchoolForm> findAll();
-	CanopySchoolForm save(CanopySchoolForm canopySchoolForm);
+@Service
+public class CanopySchoolFormService {
+
+	private final CanopySchoolFormRepository canopySchoolFormRepository;
+
+	@Autowired
+	public CanopySchoolFormService(CanopySchoolFormRepository canopySchoolFormRepository) {
+		this.canopySchoolFormRepository = canopySchoolFormRepository;
+	}
+
+	public CanopySchoolForm save(CanopySchoolForm canopySchoolForm) {
+		return canopySchoolFormRepository.save(canopySchoolForm);
+	}
 
 }

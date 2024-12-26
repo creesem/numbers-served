@@ -6,16 +6,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Reason {
+public class CaresFormLocation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 
-	public Reason() {
+	public CaresFormLocation() {
 	}
 
-	public Reason(String name) {
+	public CaresFormLocation(String name) {
 		this.name = name;
 	}
 
@@ -33,5 +33,10 @@ public class Reason {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

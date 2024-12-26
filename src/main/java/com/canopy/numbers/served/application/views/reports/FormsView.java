@@ -4,7 +4,13 @@ import com.canopy.numbers.served.application.services.CanopySchoolFormService;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+@PageTitle("Forms")
+@Route(value = "forms")
+@AnonymousAllowed
 public class FormsView extends VerticalLayout {
 	private static final long serialVersionUID = -4369888541214711609L;
 

@@ -18,6 +18,7 @@ import com.vaadin.flow.theme.Theme;
 @SpringBootApplication
 @Theme(value = "numbers-served")
 public class Application extends SpringBootServletInitializer implements AppShellConfigurator {
+	private static final long serialVersionUID = -319468755450296587L;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class CaresForm {
@@ -16,8 +18,14 @@ public class CaresForm {
 	private String visitorName;
 	private String associatedStudent;
 	private LocalDateTime dateTimeOfVisit;
-	private String prtfOrCaresSchool;
-	private String reasonForVisit;
+
+	@ManyToOne
+	@JoinColumn(name = "location_id", nullable = false)
+	private CaresFormLocation location;
+
+	@ManyToOne
+	@JoinColumn(name = "reason_id", nullable = false)
+	private CaresFormReason reasonForVisit;
 
 	// Getters and Setters
 	public Long getId() {
@@ -52,19 +60,19 @@ public class CaresForm {
 		this.dateTimeOfVisit = dateTimeOfVisit;
 	}
 
-	public String getPrtfOrCaresSchool() {
-		return prtfOrCaresSchool;
+	public CaresFormLocation getLocation() {
+		return location;
 	}
 
-	public void setPrtfOrCaresSchool(String prtfOrCaresSchool) {
-		this.prtfOrCaresSchool = prtfOrCaresSchool;
+	public void setLocation(CaresFormLocation location) {
+		this.location = location;
 	}
 
-	public String getReasonForVisit() {
+	public CaresFormReason getReasonForVisit() {
 		return reasonForVisit;
 	}
 
-	public void setReasonForVisit(String reasonForVisit) {
+	public void setReasonForVisit(CaresFormReason reasonForVisit) {
 		this.reasonForVisit = reasonForVisit;
 	}
 }

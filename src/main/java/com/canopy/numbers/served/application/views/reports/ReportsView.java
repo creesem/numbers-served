@@ -1,17 +1,24 @@
 package com.canopy.numbers.served.application.views.reports;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @Route("reports")
+@AnonymousAllowed
 public class ReportsView extends VerticalLayout {
+
+	private CaresReportLayout caresReportLayout;
 
 	private static final long serialVersionUID = -4938342493569169286L;
 
-	public ReportsView() {
+	public ReportsView(CaresReportLayout caresReportLayout) {
+		this.caresReportLayout = caresReportLayout;
 		setSizeFull();
 
 		// Create tabs for CARES and TCS reports
@@ -21,7 +28,7 @@ public class ReportsView extends VerticalLayout {
 		reportTabs.setWidthFull();
 
 		// Create containers for content
-		Div caresContent = new CaresReportLayout().createLayout();
+		Div caresContent = caresReportLayout.createLayout();
 		Div tcsContent = createTcsReportLayout();
 
 		// Wrap the content in a layout
