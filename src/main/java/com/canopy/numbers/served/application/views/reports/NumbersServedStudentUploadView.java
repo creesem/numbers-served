@@ -12,9 +12,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.canopy.numbers.served.application.data.CaresForm;
 import com.canopy.numbers.served.application.data.NumbersServedStudent;
-import com.canopy.numbers.served.application.service.CaresFormService;
 import com.canopy.numbers.served.application.service.NumbersServedStudentService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
@@ -32,9 +30,6 @@ public class NumbersServedStudentUploadView extends VerticalLayout {
 
 	@Autowired
 	private NumbersServedStudentService studentService;
-
-	@Autowired
-	private CaresFormService caresFormService;
 
 	private final MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
 	private final List<String> uploadedFiles = new ArrayList<>();
@@ -72,7 +67,6 @@ public class NumbersServedStudentUploadView extends VerticalLayout {
 
 		for (String fileName : uploadedFiles) {
 			try (BufferedReader reader = new BufferedReader(new InputStreamReader(buffer.getInputStream(fileName)))) {
-				List<NumbersServedStudent> students = new ArrayList<>();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
 				// Build the CSV format with headers
@@ -83,30 +77,39 @@ public class NumbersServedStudentUploadView extends VerticalLayout {
 				// Parse the CSV file
 				try (CSVParser parser = csvFormat.parse(reader)) {
 					for (CSVRecord record : parser) {
-						NumbersServedStudent student = new NumbersServedStudent();
-
 						// Parse fields
-						student.setStudentId(Integer.parseInt(record.get("Student ID (System)").trim()));
+						int studentId = Integer.parseInt(record.get("Student ID (System)").trim());
 						String[] nameParts = record.get("LastName, FirstName").split(", ");
-						if (nameParts.length == 2) {
-							student.setLastName(nameParts[0].trim());
-							student.setFirstName(nameParts[1].trim());
+						String lastName = nameParts.length > 0 ? nameParts[0].trim() : "";
+						String firstName = nameParts.length > 1 ? nameParts[1].trim() : "";
+						String status = record.get("Status").trim();
+						String gradeLevel = record.get("Grade Level").trim();
+						LocalDate birthDate = LocalDate.parse(record.get("Birth date").trim(), formatter);
+
+						// Check if the student exists
+						NumbersServedStudent existingStudent = studentService
+								.findByStudentIdAndNameAndBirthDate(studentId, lastName, firstName, birthDate);
+
+						if (existingStudent != null) {
+							// Update existing student
+							existingStudent.setStatus(status);
+							existingStudent.setGradeLevel(gradeLevel);
+							studentService.save(existingStudent);
 						} else {
-							student.setLastName(record.get("LastName, FirstName").trim());
-							student.setFirstName(""); // Handle missing first name
+							// Create a new student
+							NumbersServedStudent newStudent = new NumbersServedStudent();
+							newStudent.setStudentId(studentId);
+							newStudent.setLastName(lastName);
+							newStudent.setFirstName(firstName);
+							newStudent.setStatus(status);
+							newStudent.setGradeLevel(gradeLevel);
+							newStudent.setBirthDate(birthDate);
+							studentService.save(newStudent);
 						}
-						student.setStatus(record.get("Status").trim());
-						student.setGradeLevel(record.get("Grade Level").trim());
-						student.setBirthDate(LocalDate.parse(record.get("Birth date").trim(), formatter));
-
-						students.add(student);
-
 					}
 				}
 
-				// Save all students to the database
-				studentService.saveAll(students);
-				Notification.show("File '" + fileName + "' processed and data uploaded!", 3000,
+				Notification.show("File '" + fileName + "' processed and data uploaded/updated!", 3000,
 						Notification.Position.MIDDLE);
 
 			} catch (Exception ex) {
@@ -119,5 +122,4 @@ public class NumbersServedStudentUploadView extends VerticalLayout {
 		// Clear uploaded files after processing
 		uploadedFiles.clear();
 	}
-
 }

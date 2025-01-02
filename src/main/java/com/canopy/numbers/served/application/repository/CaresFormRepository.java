@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.canopy.numbers.served.application.data.CaresForm;
 import com.canopy.numbers.served.application.data.CaresFormLocation;
 import com.canopy.numbers.served.application.data.CaresFormReason;
+import com.canopy.numbers.served.application.data.NumbersServedStudent;
 
 @Repository
 public interface CaresFormRepository extends JpaRepository<CaresForm, Long> {
@@ -16,5 +17,5 @@ public interface CaresFormRepository extends JpaRepository<CaresForm, Long> {
 
 	List<CaresForm> findByReasonForVisit(CaresFormReason reason);
 
-	Optional<CaresForm> findByAssociatedStudent(String associatedStudent);
+	Optional<CaresForm> findByAssociatedStudent(NumbersServedStudent associatedStudent);
 }

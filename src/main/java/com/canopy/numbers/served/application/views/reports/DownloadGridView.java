@@ -1,6 +1,7 @@
 package com.canopy.numbers.served.application.views.reports;
 
 import java.io.ByteArrayInputStream;
+import java.util.List;
 
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -15,37 +16,48 @@ public abstract class DownloadGridView<T> extends VerticalLayout implements Rout
 	protected StreamRegistration registration;
 
 	/**
-	 * Generate an Excel file in byte[] format for the given item.
+	 * Generate an Excel file in byte[] format for the given list of items.
 	 */
-	protected abstract byte[] generateExcel(T item);
+	protected abstract byte[] generateExcel(List<T> items);
 
 	/**
-	 * Initiates the download service for the selected item.
+	 * Initiates the download service for the selected items.
 	 */
-	protected void callDownloadService(T selected) {
-		byte[] excelBytes = generateExcel(selected);
+	protected void callDownloadService(List<T> selectedItems) {
+		if (selectedItems == null || selectedItems.isEmpty()) {
+			Notification.show("No items selected for download", 3000, Notification.Position.MIDDLE);
+			return;
+		}
+
+		byte[] excelBytes = generateExcel(selectedItems);
 		if (excelBytes != null) {
-			StreamResource resource = createStreamResource(selected, excelBytes);
-			initiateDownload(resource, getItemId(selected));
+			StreamResource resource = createStreamResource(excelBytes);
+			initiateDownload(resource);
 		} else {
-			Notification.show("Item not found", 3000, Notification.Position.MIDDLE);
+			Notification.show("Error generating Excel file", 3000, Notification.Position.MIDDLE);
 		}
 	}
 
-	private StreamResource createStreamResource(T selected, byte[] excelBytes) {
-		return new StreamResource("item_" + getItemId(selected) + ".xlsx", () -> new ByteArrayInputStream(excelBytes));
+	/**
+	 * Creates a StreamResource for the Excel file.
+	 */
+	private StreamResource createStreamResource(byte[] excelBytes) {
+		return new StreamResource("items.xlsx", () -> new ByteArrayInputStream(excelBytes));
 	}
 
-	private void initiateDownload(StreamResource resource, String resourceId) {
+	/**
+	 * Initiates the download process for the given StreamResource.
+	 */
+	private void initiateDownload(StreamResource resource) {
 		getUI().ifPresent(ui -> {
 			registration = ui.getSession().getResourceRegistry().registerResource(resource);
 			String resourceUrl = registration.getResourceUri().toString();
 			ui.getPage().executeJs(
 					"var link = document.createElement('a');" + "link.href = $0;"
-							+ "link.download = 'item_' + $1 + '.xlsx';" + "document.body.appendChild(link);"
+							+ "link.download = 'cares_report.csv';" + "document.body.appendChild(link);"
 							+ "link.click();" + "document.body.removeChild(link);"
-							+ "setTimeout(function() { $2.$server.unregisterResource(); }, 500);",
-					resourceUrl, resourceId, getElement());
+							+ "setTimeout(function() { $1.$server.unregisterResource(); }, 500);",
+					resourceUrl, getElement());
 		});
 	}
 

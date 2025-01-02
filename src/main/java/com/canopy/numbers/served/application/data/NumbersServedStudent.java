@@ -77,4 +77,9 @@ public class NumbersServedStudent {
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
+	
+	@Override
+	public String toString() {
+		return lastName + ", " + firstName; 
+	}
 }

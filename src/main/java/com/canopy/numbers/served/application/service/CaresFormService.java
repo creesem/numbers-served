@@ -1,6 +1,7 @@
 package com.canopy.numbers.served.application.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.canopy.numbers.served.application.data.CaresForm;
 import com.canopy.numbers.served.application.data.CaresFormLocation;
 import com.canopy.numbers.served.application.data.CaresFormReason;
+import com.canopy.numbers.served.application.data.NumbersServedStudent;
 import com.canopy.numbers.served.application.repository.CaresFormRepository;
 
 @Service
@@ -17,13 +19,13 @@ public class CaresFormService {
 	private CaresFormRepository caresFormRepository;
 
 	@Autowired
-	private LocationService locationService;
+	private CaresFormLocationService locationService;
 
 	@Autowired
-	private ReasonService reasonService;
+	private CaresFormReasonService reasonService;
 
-	public CaresForm createCaresForm(String visitorName, String associatedStudent, LocalDateTime dateTimeOfVisit,
-			Long locationId, Long reasonId) {
+	public CaresForm createCaresForm(String visitorName, NumbersServedStudent associatedStudent,
+			LocalDateTime dateTimeOfVisit, Long locationId, Long reasonId) {
 		CaresForm form = new CaresForm();
 		form.setVisitorName(visitorName);
 		form.setAssociatedStudent(associatedStudent);
@@ -42,9 +44,13 @@ public class CaresFormService {
 		return caresFormRepository.save(caresForm);
 	}
 
-	public CaresForm findByAssociatedStudent(String associatedStudent) {
+	public CaresForm findByAssociatedStudent(NumbersServedStudent associatedStudent) {
 		Optional<CaresForm> caresForm = caresFormRepository.findByAssociatedStudent(associatedStudent);
 		return caresForm.orElse(null);
+	}
+
+	public List<CaresForm> findAll() {
+		return caresFormRepository.findAll();
 	}
 
 }

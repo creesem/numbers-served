@@ -12,7 +12,6 @@ public class CaresForm {
 	private Long id;
 
 	private String visitorName;
-	private String associatedStudent;
 	private LocalDateTime dateTimeOfVisit;
 
 	@ManyToOne
@@ -25,7 +24,7 @@ public class CaresForm {
 
 	@ManyToOne
 	@JoinColumn(name = "student_id", referencedColumnName = "id", nullable = true)
-	private NumbersServedStudent student;
+	private NumbersServedStudent associatedStudent;
 
 	// Getters and Setters
 	public Long getId() {
@@ -44,11 +43,11 @@ public class CaresForm {
 		this.visitorName = visitorName;
 	}
 
-	public String getAssociatedStudent() {
+	public NumbersServedStudent getAssociatedStudent() {
 		return associatedStudent;
 	}
 
-	public void setAssociatedStudent(String associatedStudent) {
+	public void setAssociatedStudent(NumbersServedStudent associatedStudent) {
 		this.associatedStudent = associatedStudent;
 	}
 
@@ -76,11 +75,4 @@ public class CaresForm {
 		this.reasonForVisit = reasonForVisit;
 	}
 
-	public NumbersServedStudent getStudent() {
-		return student;
-	}
-
-	public void setStudent(NumbersServedStudent student) {
-		this.student = student;
-	}
 }

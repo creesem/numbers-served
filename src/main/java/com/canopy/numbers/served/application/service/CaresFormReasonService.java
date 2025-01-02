@@ -9,11 +9,15 @@ import com.canopy.numbers.served.application.data.CaresFormReason;
 import com.canopy.numbers.served.application.repository.ReasonRepository;
 
 @Service
-public class ReasonService {
+public class CaresFormReasonService {
 	@Autowired
 	private ReasonRepository reasonRepository;
 
 	public List<CaresFormReason> getAllReasons() {
+		return reasonRepository.findAll();
+	}
+
+	public List<CaresFormReason> findAll() {
 		return reasonRepository.findAll();
 	}
 

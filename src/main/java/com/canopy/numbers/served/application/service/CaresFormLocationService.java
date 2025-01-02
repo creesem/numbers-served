@@ -9,11 +9,15 @@ import com.canopy.numbers.served.application.data.CaresFormLocation;
 import com.canopy.numbers.served.application.repository.LocationRepository;
 
 @Service
-public class LocationService {
+public class CaresFormLocationService {
 	@Autowired
 	private LocationRepository locationRepository;
 
 	public List<CaresFormLocation> getAllLocations() {
+		return locationRepository.findAll();
+	}
+
+	public List<CaresFormLocation> findAll() {
 		return locationRepository.findAll();
 	}
 
