@@ -1,9 +1,7 @@
 package com.canopy.numbers.served.application.views.reports;
 
 import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
