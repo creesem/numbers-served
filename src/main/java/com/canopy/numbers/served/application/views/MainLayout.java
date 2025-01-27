@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
-import com.canopy.numbers.served.application.data.User;
+import com.canopy.application.data.User;
 import com.canopy.numbers.served.application.security.AuthenticatedUser;
 import com.canopy.numbers.served.application.views.reports.FormsView;
 import com.canopy.numbers.served.application.views.reports.NumbersServedStudentUploadView;
@@ -28,7 +28,6 @@ import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.Layout;
-import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
