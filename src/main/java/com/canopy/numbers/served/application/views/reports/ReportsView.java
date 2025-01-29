@@ -15,7 +15,7 @@ public class ReportsView extends VerticalLayout {
 
 	private static final long serialVersionUID = -4938342493569169286L;
 
-	public ReportsView(CaresReportLayout caresReportLayout) {
+	public ReportsView(CaresReportLayout caresReportLayout, TcsReportLayout tcsReportLayout) {
 		this.caresReportLayout = caresReportLayout;
 		setSizeFull();
 
@@ -27,7 +27,7 @@ public class ReportsView extends VerticalLayout {
 
 		// Create containers for content
 		Div caresContent = caresReportLayout.createLayout();
-		Div tcsContent = createTcsReportLayout();
+		Div tcsContent = tcsReportLayout.createLayout();
 
 		// Wrap the content in a layout
 		caresContent.setVisible(true);

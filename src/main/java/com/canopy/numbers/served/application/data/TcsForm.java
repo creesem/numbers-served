@@ -6,52 +6,61 @@ import jakarta.persistence.*;
 @Entity
 public class TcsForm {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String guardianName;
+	private String guardianName;
 
-    private LocalDateTime dateTimeOfVisit;
+	private LocalDateTime dateTimeOfVisit;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id", referencedColumnName = "id", nullable = true)
-    private NumbersServedStudent associatedStudent;
+	private String studentFullname;
 
-    // Default constructor
-    public TcsForm() {
-    }
+	private String location;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
+	// Default constructor
+	public TcsForm() {
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	// Getters and setters
+	public Long getId() {
+		return id;
+	}
 
-    public String getGuardianName() {
-        return guardianName;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setGuardianName(String guardianName) {
-        this.guardianName = guardianName;
-    }
+	public String getGuardianName() {
+		return guardianName;
+	}
 
-    public LocalDateTime getDateTimeOfVisit() {
-        return dateTimeOfVisit;
-    }
+	public void setGuardianName(String guardianName) {
+		this.guardianName = guardianName;
+	}
 
-    public void setDateTimeOfVisit(LocalDateTime dateTimeOfVisit) {
-        this.dateTimeOfVisit = dateTimeOfVisit;
-    }
+	public LocalDateTime getDateTimeOfVisit() {
+		return dateTimeOfVisit;
+	}
 
-    public NumbersServedStudent getAssociatedStudent() {
-        return associatedStudent;
-    }
+	public void setDateTimeOfVisit(LocalDateTime dateTimeOfVisit) {
+		this.dateTimeOfVisit = dateTimeOfVisit;
+	}
 
-    public void setAssociatedStudent(NumbersServedStudent associatedStudent) {
-        this.associatedStudent = associatedStudent;
-    }
+	public String getStudentFullname() {
+		return studentFullname;
+	}
+
+	public void setStudentFullname(String studentFullname) {
+		this.studentFullname = studentFullname;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
 }

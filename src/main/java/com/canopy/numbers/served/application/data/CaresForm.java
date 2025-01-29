@@ -13,6 +13,7 @@ public class CaresForm {
 
 	private String visitorName;
 	private LocalDateTime dateTimeOfVisit;
+	private String studentFullname;
 
 	@ManyToOne
 	@JoinColumn(name = "location_id", nullable = false)
@@ -73,6 +74,14 @@ public class CaresForm {
 
 	public void setReasonForVisit(CaresFormReason reasonForVisit) {
 		this.reasonForVisit = reasonForVisit;
+	}
+
+	public String getStudentFullname() {
+		return studentFullname;
+	}
+
+	public void setStudentFullname(String studentFullname) {
+		this.studentFullname = studentFullname;
 	}
 
 }

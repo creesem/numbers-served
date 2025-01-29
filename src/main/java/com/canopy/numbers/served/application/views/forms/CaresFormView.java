@@ -28,7 +28,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @Route(value = "cares-form", layout = NoNavLayout.class)
-@PageTitle("Cares Check-in")
+@PageTitle("CARES Check-in")
 @AnonymousAllowed
 public class CaresFormView extends VerticalLayout {
 	private static final long serialVersionUID = 3586355313266457400L;
