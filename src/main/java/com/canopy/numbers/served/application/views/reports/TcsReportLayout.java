@@ -58,9 +58,8 @@ public class TcsReportLayout extends DownloadGridView<TcsForm> {
 							|| form.getGuardianName().toLowerCase().contains(guardianName))
 					.filter(form -> selectedDate == null || (form.getDateTimeOfVisit() != null
 							&& form.getDateTimeOfVisit().toLocalDate().equals(selectedDate)))
-					.filter(form -> studentName.isEmpty() || (form.getAssociatedStudent() != null
-							&& (form.getAssociatedStudent().getFirstName().toLowerCase().contains(studentName)
-									|| form.getAssociatedStudent().getLastName().toLowerCase().contains(studentName))))
+					.filter(form -> studentName.isEmpty() || (form.getStudentFullname() != null
+							&& (form.getStudentFullname().toLowerCase().contains(studentName))))
 					.collect(Collectors.toList());
 
 			tcsGrid.setItems(currentItems);
@@ -89,9 +88,8 @@ public class TcsReportLayout extends DownloadGridView<TcsForm> {
 						: "N/A")
 				.setHeader("Date").setSortable(true);
 		tcsGrid.addColumn(tcsForm -> {
-			if (tcsForm.getAssociatedStudent() != null) {
-				return tcsForm.getAssociatedStudent().getLastName() + ", "
-						+ tcsForm.getAssociatedStudent().getFirstName();
+			if (tcsForm.getStudentFullname() != null) {
+				return tcsForm.getStudentFullname();
 			}
 			return "N/A";
 		}).setHeader("Associated Student");

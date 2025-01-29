@@ -16,7 +16,9 @@ public class TcsForm {
 
 	private String studentFullname;
 
-	private String location;
+	@ManyToOne
+	@JoinColumn(name = "location_id", nullable = false)
+	private CaresFormLocation location;
 
 	// Default constructor
 	public TcsForm() {
@@ -55,11 +57,11 @@ public class TcsForm {
 		this.studentFullname = studentFullname;
 	}
 
-	public String getLocation() {
+	public CaresFormLocation getLocation() {
 		return location;
 	}
 
-	public void setLocation(String location) {
+	public void setLocation(CaresFormLocation location) {
 		this.location = location;
 	}
 
