@@ -65,4 +65,16 @@ public abstract class DownloadGridView<T> extends VerticalLayout implements Rout
 	 * Retrieves the unique identifier for the given item.
 	 */
 	protected abstract String getItemId(T item);
+	
+    /**
+     * Refreshes the grid with the provided list of items.
+     *
+     * @param items the list of items to display in the grid
+     */
+	/*
+	 * protected void refresh(List<T> items) { if (items == null || items.isEmpty())
+	 * { Notification.show("No data available to display", 3000,
+	 * Notification.Position.MIDDLE); } else { grid.setItems(items);
+	 * grid.getDataProvider().refreshAll(); } }
+	 */
 }

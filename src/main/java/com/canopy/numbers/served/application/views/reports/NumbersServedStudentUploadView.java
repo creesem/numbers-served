@@ -21,10 +21,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
+
+import jakarta.annotation.security.PermitAll;
 
 @Route("students-upload")
-@AnonymousAllowed
+@PermitAll
 public class NumbersServedStudentUploadView extends VerticalLayout {
 	private static final long serialVersionUID = 3499519330520576970L;
 

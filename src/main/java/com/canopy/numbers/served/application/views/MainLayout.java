@@ -81,17 +81,6 @@ public class MainLayout extends AppLayout {
 	private SideNav createNavigation() {
 		SideNav nav = new SideNav();
 
-		List<MenuEntry> menuEntries = MenuConfiguration.getMenuEntries();
-		menuEntries.forEach(entry -> {
-			if (entry.icon() != null) {
-				nav.addItem(new SideNavItem(entry.title(), entry.path(), new SvgIcon(entry.icon())));
-			} else {
-				nav.addItem(new SideNavItem(entry.title(), entry.path()));
-			}
-
-		});
-
-		nav.addItem(new SideNavItem("Forms", FormsView.class, LineAwesomeIcon.HAND_PAPER.create()));
 		nav.addItem(new SideNavItem("Reports", ReportsView.class, LineAwesomeIcon.CHART_PIE_SOLID.create()));
 		nav.addItem(new SideNavItem("Upload Students", NumbersServedStudentUploadView.class,
 				LineAwesomeIcon.UPLOAD_SOLID.create()));
