@@ -14,13 +14,13 @@ public class ReportsView extends VerticalLayout {
 
 	private static final long serialVersionUID = -4938342493569169286L;
 
-	public ReportsView(CaresReportLayout caresReportLayout, TcsReportLayout tcsReportLayout) {
+	public ReportsView(CaresReportLayout caresReportLayout, PTRFReportLayout tcsReportLayout) {
 		setSizeFull();
 
 		// Create tabs for CARES and TCS reports
 		Tab caresTab = new Tab("CARES Report");
-		Tab tcsTab = new Tab("TCS Report");
-		Tabs reportTabs = new Tabs(caresTab, tcsTab);
+		Tab ptrfTab = new Tab("PTRF Report");
+		Tabs reportTabs = new Tabs(caresTab, ptrfTab);
 		reportTabs.setWidthFull();
 
 		// Create containers for content

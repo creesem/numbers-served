@@ -19,13 +19,7 @@ public class CaresForm {
 	@JoinColumn(name = "location_id", nullable = false)
 	private CaresFormLocation location;
 
-	@ManyToOne
-	@JoinColumn(name = "reason_id", nullable = false)
-	private CaresFormReason reasonForVisit;
-
-	@ManyToOne
-	@JoinColumn(name = "student_id", referencedColumnName = "id", nullable = true)
-	private NumbersServedStudent associatedStudent;
+	private String reasonForVisit;
 
 	// Getters and Setters
 	public Long getId() {
@@ -44,14 +38,6 @@ public class CaresForm {
 		this.visitorName = visitorName;
 	}
 
-	public NumbersServedStudent getAssociatedStudent() {
-		return associatedStudent;
-	}
-
-	public void setAssociatedStudent(NumbersServedStudent associatedStudent) {
-		this.associatedStudent = associatedStudent;
-	}
-
 	public LocalDateTime getDateTimeOfVisit() {
 		return dateTimeOfVisit;
 	}
@@ -68,11 +54,11 @@ public class CaresForm {
 		this.location = location;
 	}
 
-	public CaresFormReason getReasonForVisit() {
+	public String getReasonForVisit() {
 		return reasonForVisit;
 	}
 
-	public void setReasonForVisit(CaresFormReason reasonForVisit) {
+	public void setReasonForVisit(String reasonForVisit) {
 		this.reasonForVisit = reasonForVisit;
 	}
 

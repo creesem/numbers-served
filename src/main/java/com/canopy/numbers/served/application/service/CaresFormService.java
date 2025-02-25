@@ -24,18 +24,18 @@ public class CaresFormService {
 	@Autowired
 	private CaresFormReasonService reasonService;
 
-	public CaresForm createCaresForm(String visitorName, NumbersServedStudent associatedStudent,
-			LocalDateTime dateTimeOfVisit, Long locationId, Long reasonId) {
+	public CaresForm createCaresForm(String visitorName, String studentFullname, LocalDateTime dateTimeOfVisit,
+			Long locationId, Long reasonId) {
 		CaresForm form = new CaresForm();
 		form.setVisitorName(visitorName);
-		form.setAssociatedStudent(associatedStudent);
+		form.setStudentFullname(studentFullname);
 		form.setDateTimeOfVisit(dateTimeOfVisit);
 
 		CaresFormLocation location = locationService.findById(locationId);
 		CaresFormReason reason = reasonService.findById(reasonId);
 
 		form.setLocation(location);
-		form.setReasonForVisit(reason);
+		form.setReasonForVisit(reason.getName());
 
 		return caresFormRepository.save(form);
 	}
@@ -44,8 +44,8 @@ public class CaresFormService {
 		return caresFormRepository.save(caresForm);
 	}
 
-	public CaresForm findByAssociatedStudent(NumbersServedStudent associatedStudent) {
-		Optional<CaresForm> caresForm = caresFormRepository.findByAssociatedStudent(associatedStudent);
+	public CaresForm findByAssociatedStudent(String studentFullname) {
+		Optional<CaresForm> caresForm = caresFormRepository.findByStudentFullname(studentFullname);
 		return caresForm.orElse(null);
 	}
 

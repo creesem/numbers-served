@@ -1,14 +1,12 @@
 package com.canopy.numbers.served.application.views;
 
 import java.io.ByteArrayInputStream;
-import java.util.List;
 import java.util.Optional;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 import com.canopy.numbers.served.application.data.User;
 import com.canopy.numbers.served.application.security.AuthenticatedUser;
-import com.canopy.numbers.served.application.views.reports.FormsView;
 import com.canopy.numbers.served.application.views.reports.NumbersServedStudentUploadView;
 import com.canopy.numbers.served.application.views.reports.ReportsView;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -22,18 +20,15 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.SvgIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.Layout;
-import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.server.menu.MenuConfiguration;
-import com.vaadin.flow.server.menu.MenuEntry;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 /**
@@ -69,7 +64,7 @@ public class MainLayout extends AppLayout {
 	}
 
 	private void addDrawerContent() {
-		Span appName = new Span("FACETS");
+		Span appName = new Span("Check-In");
 		appName.addClassNames(LumoUtility.FontWeight.SEMIBOLD, LumoUtility.FontSize.LARGE);
 		Header header = new Header(appName);
 

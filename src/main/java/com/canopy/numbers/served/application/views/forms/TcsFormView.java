@@ -1,18 +1,19 @@
 package com.canopy.numbers.served.application.views.forms;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.canopy.numbers.served.application.data.CaresFormLocation;
-import com.canopy.numbers.served.application.data.NumbersServedStudent;
-import com.canopy.numbers.served.application.data.TcsForm;
+import com.canopy.numbers.served.application.data.CaresFormReason;
+import com.canopy.numbers.served.application.data.PRTFForm;
 import com.canopy.numbers.served.application.service.CaresFormLocationService;
+import com.canopy.numbers.served.application.service.CaresFormReasonService;
 import com.canopy.numbers.served.application.service.NumbersServedStudentService;
-import com.canopy.numbers.served.application.service.TcsFormService;
+import com.canopy.numbers.served.application.service.PTRFFormService;
 import com.canopy.numbers.served.application.views.layout.NoNavLayout;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -25,19 +26,20 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-@Route(value = "tcs-form", layout = NoNavLayout.class)
-@PageTitle("TCS Check-in")
+@Route(value = "prtf-form", layout = NoNavLayout.class)
+@PageTitle("PTRF Check-in")
 @AnonymousAllowed
 public class TcsFormView extends VerticalLayout {
 	private static final long serialVersionUID = -2250637917523294052L;
 	private final TextField associatedStudent;
-	private final TcsFormService tcsFormService;
+	private final PTRFFormService tcsFormService;
 	private TextField guardianNameField = new TextField("Guardian Name");
-	private final Select<CaresFormLocation> location;
+	private final Select<String> reasonForVisit;
+	private final TextField otherReasonField; // Field for custom reason
 
 	@Autowired
-	public TcsFormView(TcsFormService tcsFormService, NumbersServedStudentService numbersServedStudentService,
-			CaresFormLocationService caresFormLocationService) {
+	public TcsFormView(PTRFFormService tcsFormService, NumbersServedStudentService numbersServedStudentService,
+			CaresFormReasonService caresFormReasonService, CaresFormLocationService caresFormLocationService) {
 		// Create form components
 		this.tcsFormService = tcsFormService;
 
@@ -46,26 +48,41 @@ public class TcsFormView extends VerticalLayout {
 		// Populate the ComboBox with students
 		associatedStudent = new TextField("Associated Student");
 
-		// Populate dropdowns
-		location = new Select<>();
-		location.setLabel("Location");
-		location.setItems(caresFormLocationService.findAll());
-		location.setItemLabelGenerator(CaresFormLocation::getName);
+		List<String> reasonOptions = caresFormReasonService.findAll().stream().map(reason -> reason.getName())
+				.collect(Collectors.toList());
+		// reasonOptions.add("Other"); // Add 'Other' option
+
+		reasonForVisit = new Select<>();
+		reasonForVisit.setLabel("Reason for Visit");
+		reasonForVisit.setItems(reasonOptions);
+
+		// "Other" reason text field (hidden initially)
+		otherReasonField = new TextField("Specify Other Reason");
+		otherReasonField.setVisible(false);
 
 		// Create a binder to bind the form fields to the TcsForm object
-		Binder<TcsForm> binder = new Binder<>(TcsForm.class);
-		binder.forField(guardianNameField).bind(TcsForm::getGuardianName, TcsForm::setGuardianName);
-		binder.forField(associatedStudent).bind(TcsForm::getStudentFullname, TcsForm::setStudentFullname);
-		binder.forField(location).bind(TcsForm::getLocation, TcsForm::setLocation);
+		Binder<PRTFForm> binder = new Binder<>(PRTFForm.class);
+		binder.forField(guardianNameField).bind(PRTFForm::getGuardianName, PRTFForm::setGuardianName);
+		binder.forField(associatedStudent).bind(PRTFForm::getStudentFullname, PRTFForm::setStudentFullname);
+		binder.forField(reasonForVisit).bind(PRTFForm::getReasonForVisit, PRTFForm::setReasonForVisit);
+
+		reasonForVisit.addValueChangeListener(event -> {
+			if ("Other".equals(event.getValue())) {
+				otherReasonField.setVisible(true);
+			} else {
+				otherReasonField.setVisible(false);
+				otherReasonField.clear();
+			}
+		});
 
 		// Create a form layout and add the fields
 		FormLayout formLayout = new FormLayout();
-		formLayout.add(guardianNameField, associatedStudent);
+		formLayout.add(guardianNameField, associatedStudent, reasonForVisit, otherReasonField);
 
 		// Create Save and Cancel buttons
 		Button saveButton = new Button("Save", event -> {
 			if (binder.validate().isOk()) {
-				TcsForm tcsForm = new TcsForm();
+				PRTFForm tcsForm = new PRTFForm();
 				binder.writeBeanIfValid(tcsForm);
 				tcsForm.setDateTimeOfVisit(LocalDateTime.now());
 				saveTcsForm(tcsForm); // Save the form data
@@ -116,8 +133,11 @@ public class TcsFormView extends VerticalLayout {
 		add(centeringDiv);
 	}
 
-	private void saveTcsForm(TcsForm tcsForm) {
+	private void saveTcsForm(PRTFForm tcsForm) {
 		// Save the TcsForm object using the service
+		if (otherReasonField.isVisible()) {
+			tcsForm.setReasonForVisit(otherReasonField.getValue());
+		}
 		tcsFormService.save(tcsForm);
 		clearForm();
 		System.out.println("TcsForm saved: " + tcsForm);
@@ -127,5 +147,8 @@ public class TcsFormView extends VerticalLayout {
 		// TODO Auto-generated method stub
 		guardianNameField.clear();
 		associatedStudent.clear();
+		reasonForVisit.clear();
+		otherReasonField.clear();
+		otherReasonField.setVisible(false);
 	}
 }

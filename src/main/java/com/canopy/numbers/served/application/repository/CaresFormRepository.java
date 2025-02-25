@@ -17,5 +17,5 @@ public interface CaresFormRepository extends JpaRepository<CaresForm, Long> {
 
 	List<CaresForm> findByReasonForVisit(CaresFormReason reason);
 
-	Optional<CaresForm> findByAssociatedStudent(NumbersServedStudent associatedStudent);
+	Optional<CaresForm> findByStudentFullname(String studentFullname);
 }

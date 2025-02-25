@@ -1,20 +1,19 @@
 package com.canopy.numbers.served.application.views.forms;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.canopy.numbers.served.application.data.CaresForm;
 import com.canopy.numbers.served.application.data.CaresFormLocation;
-import com.canopy.numbers.served.application.data.CaresFormReason;
-import com.canopy.numbers.served.application.data.NumbersServedStudent;
 import com.canopy.numbers.served.application.service.CaresFormLocationService;
 import com.canopy.numbers.served.application.service.CaresFormReasonService;
 import com.canopy.numbers.served.application.service.CaresFormService;
 import com.canopy.numbers.served.application.service.NumbersServedStudentService;
 import com.canopy.numbers.served.application.views.layout.NoNavLayout;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -27,16 +26,17 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-@Route(value = "cares-form", layout = NoNavLayout.class)
+@Route(value = "tcs-form", layout = NoNavLayout.class)
 @PageTitle("CARES Check-in")
 @AnonymousAllowed
 public class CaresFormView extends VerticalLayout {
 	private static final long serialVersionUID = 3586355313266457400L;
 	private final CaresFormService caresFormService;
-	private final ComboBox<NumbersServedStudent> associatedStudent;
+	private final TextField associatedStudent;
 	private final Select<CaresFormLocation> location;
-	private final Select<CaresFormReason> reasonForVisit;
+	private final Select<String> reasonForVisit;
 	private final TextField visitorName;
+	private final TextField otherReasonField; // Field for custom reason
 
 	@Autowired
 	public CaresFormView(CaresFormService caresFormService, CaresFormLocationService caresFormLocationService,
@@ -44,14 +44,16 @@ public class CaresFormView extends VerticalLayout {
 		this.caresFormService = caresFormService;
 
 		// Initialize components
-		associatedStudent = new ComboBox<>("Associated Student");
-		associatedStudent.setItems(numbersServedStudentService.findAll());
-		associatedStudent.setItemLabelGenerator(student -> student.getLastName() + ", " + student.getFirstName());
+		associatedStudent = new TextField("Associated Student");
 
 		location = new Select<>();
 		reasonForVisit = new Select<>();
 
 		visitorName = new TextField("Visitor Name");
+
+		List<String> reasonOptions = caresFormReasonService.findAll().stream().map(reason -> reason.getName())
+				.collect(Collectors.toList());
+		// reasonOptions.add("Other"); // Add 'Other' option
 
 		// Populate dropdowns
 		location.setLabel("Location");
@@ -59,11 +61,24 @@ public class CaresFormView extends VerticalLayout {
 		location.setItemLabelGenerator(CaresFormLocation::getName);
 
 		reasonForVisit.setLabel("Reason for Visit");
-		reasonForVisit.setItems(caresFormReasonService.findAll());
-		reasonForVisit.setItemLabelGenerator(CaresFormReason::getName);
+		reasonForVisit.setItems(reasonOptions);
+
+		// "Other" reason text field (hidden initially)
+		otherReasonField = new TextField("Specify Other Reason");
+		otherReasonField.setVisible(false);
+
+		reasonForVisit.addValueChangeListener(event -> {
+			if ("Other".equals(event.getValue())) {
+				otherReasonField.setVisible(true);
+			} else {
+				otherReasonField.setVisible(false);
+				otherReasonField.clear();
+			}
+		});
 
 		// Form layout
-		FormLayout formLayout = new FormLayout(visitorName, associatedStudent, location, reasonForVisit);
+		FormLayout formLayout = new FormLayout(visitorName, associatedStudent, location, reasonForVisit,
+				otherReasonField);
 
 		// Buttons
 		Button saveButton = new Button("Save", e -> saveCaresForm());
@@ -115,11 +130,14 @@ public class CaresFormView extends VerticalLayout {
 		if (isValidInput()) {
 			CaresForm form = new CaresForm();
 			form.setVisitorName(visitorName.getValue());
-			form.setAssociatedStudent(associatedStudent.getValue());
+			form.setStudentFullname(associatedStudent.getValue());
 			form.setDateTimeOfVisit(LocalDateTime.now()); // Set current date and time
 			form.setLocation(location.getValue());
-			form.setReasonForVisit(reasonForVisit.getValue());
-
+			if (otherReasonField.isVisible()) {
+				form.setReasonForVisit(otherReasonField.getValue());
+			} else {
+				form.setReasonForVisit(reasonForVisit.getValue());
+			}
 			caresFormService.save(form);
 			Notification.show("Form saved successfully!", 3000, Notification.Position.MIDDLE);
 			clearForm();

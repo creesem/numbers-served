@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.canopy.numbers.served.application.data.TcsForm;
-import com.canopy.numbers.served.application.service.TcsFormService;
+import com.canopy.numbers.served.application.data.PRTFForm;
+import com.canopy.numbers.served.application.service.PTRFFormService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,15 +18,15 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 @Component
-public class TcsReportLayout extends DownloadGridView<TcsForm> {
+public class PTRFReportLayout extends DownloadGridView<PRTFForm> {
 	private static final long serialVersionUID = -2913318971443603770L;
-	private final TcsFormService tcsFormService;
-	private Grid<TcsForm> tcsGrid;
-	private List<TcsForm> currentItems;
+	private final PTRFFormService ptrfFormService;
+	private Grid<PRTFForm> ptrfGrid;
+	private List<PRTFForm> currentItems;
 
 	@Autowired
-	public TcsReportLayout(TcsFormService tcsFormService) {
-		this.tcsFormService = tcsFormService;
+	public PTRFReportLayout(PTRFFormService ptrfFormService) {
+		this.ptrfFormService = ptrfFormService;
 		add(createLayout());
 	}
 
@@ -53,7 +53,7 @@ public class TcsReportLayout extends DownloadGridView<TcsForm> {
 			String studentName = associatedStudentFilter.getValue().trim().toLowerCase();
 
 			// Apply filters
-			currentItems = tcsFormService.findAll().stream()
+			currentItems = ptrfFormService.findAll().stream()
 					.filter(form -> guardianName.isEmpty()
 							|| form.getGuardianName().toLowerCase().contains(guardianName))
 					.filter(form -> selectedDate == null || (form.getDateTimeOfVisit() != null
@@ -62,7 +62,7 @@ public class TcsReportLayout extends DownloadGridView<TcsForm> {
 							&& (form.getStudentFullname().toLowerCase().contains(studentName))))
 					.collect(Collectors.toList());
 
-			tcsGrid.setItems(currentItems);
+			ptrfGrid.setItems(currentItems);
 
 			if (currentItems.isEmpty()) {
 				Notification.show("No matching results found.", 3000, Notification.Position.MIDDLE);
@@ -80,14 +80,14 @@ public class TcsReportLayout extends DownloadGridView<TcsForm> {
 				clearFiltersButton);
 
 		// Grid for displaying TcsForm data
-		tcsGrid = new Grid<>(TcsForm.class);
-		tcsGrid.setSizeFull();
-		tcsGrid.addColumn(TcsForm::getGuardianName).setHeader("Guardian Name").setSortable(true);
-		tcsGrid.addColumn(
+		ptrfGrid = new Grid<>(PRTFForm.class);
+		ptrfGrid.setSizeFull();
+		ptrfGrid.addColumn(PRTFForm::getGuardianName).setHeader("Guardian Name").setSortable(true);
+		ptrfGrid.addColumn(
 				tcsForm -> tcsForm.getDateTimeOfVisit() != null ? tcsForm.getDateTimeOfVisit().toLocalDate().toString()
 						: "N/A")
 				.setHeader("Date").setSortable(true);
-		tcsGrid.addColumn(tcsForm -> {
+		ptrfGrid.addColumn(tcsForm -> {
 			if (tcsForm.getStudentFullname() != null) {
 				return tcsForm.getStudentFullname();
 			}
@@ -96,22 +96,22 @@ public class TcsReportLayout extends DownloadGridView<TcsForm> {
 
 		fetchAndDisplayData();
 
-		layout.add(filtersLayout, tcsGrid);
+		layout.add(filtersLayout, ptrfGrid);
 		return layout;
 	}
 
 	private void fetchAndDisplayData() {
-		currentItems = tcsFormService.findAll();
-		tcsGrid.setItems(currentItems);
+		currentItems = ptrfFormService.findAll();
+		ptrfGrid.setItems(currentItems);
 	}
 
 	@Override
-	protected byte[] generateExcel(List<TcsForm> items) {
+	protected byte[] generateExcel(List<PRTFForm> items) {
 		return null;
 	}
 
 	@Override
-	protected String getItemId(TcsForm item) {
+	protected String getItemId(PRTFForm item) {
 		return item.getId().toString();
 	}
 }

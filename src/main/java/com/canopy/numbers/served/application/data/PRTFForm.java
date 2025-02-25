@@ -1,23 +1,28 @@
 package com.canopy.numbers.served.application.data;
 
 import java.time.LocalDateTime;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class CanopySchoolForm {
+public class PRTFForm {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	private String guardianName;
-	private String studentName;
+
 	private LocalDateTime dateTimeOfVisit;
 
-	// Getters and Setters
+	private String studentFullname;
+
+	private String reasonForVisit;
+
+	// Default constructor
+	public PRTFForm() {
+	}
+
+	// Getters and setters
 	public Long getId() {
 		return id;
 	}
@@ -34,14 +39,6 @@ public class CanopySchoolForm {
 		this.guardianName = guardianName;
 	}
 
-	public String getStudentName() {
-		return studentName;
-	}
-
-	public void setStudentName(String studentName) {
-		this.studentName = studentName;
-	}
-
 	public LocalDateTime getDateTimeOfVisit() {
 		return dateTimeOfVisit;
 	}
@@ -49,4 +46,21 @@ public class CanopySchoolForm {
 	public void setDateTimeOfVisit(LocalDateTime dateTimeOfVisit) {
 		this.dateTimeOfVisit = dateTimeOfVisit;
 	}
+
+	public String getStudentFullname() {
+		return studentFullname;
+	}
+
+	public void setStudentFullname(String studentFullname) {
+		this.studentFullname = studentFullname;
+	}
+
+	public String getReasonForVisit() {
+		return reasonForVisit;
+	}
+
+	public void setReasonForVisit(String reasonForVisit) {
+		this.reasonForVisit = reasonForVisit;
+	}
+
 }

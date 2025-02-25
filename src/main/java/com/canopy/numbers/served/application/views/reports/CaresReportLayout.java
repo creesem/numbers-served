@@ -29,140 +29,139 @@ import software.xdev.vaadin.grid_exporter.GridExporter;
 @Component
 public class CaresReportLayout extends DownloadGridView<CaresForm> {
 
-    private static final long serialVersionUID = -1114611788890403198L;
+	private static final long serialVersionUID = -1114611788890403198L;
 
-    @Autowired
-    private CaresFormLocationService locationService;
+	@Autowired
+	private CaresFormLocationService locationService;
 
-    @Autowired
-    private CaresFormReasonService reasonService;
+	@Autowired
+	private CaresFormReasonService reasonService;
 
-    @Autowired
-    private CaresFormService caresFormService;
+	@Autowired
+	private CaresFormService caresFormService;
 
-    private Grid<CaresForm> caresGrid;
-    private List<CaresForm> currentItems;
+	private Grid<CaresForm> caresGrid;
+	private List<CaresForm> currentItems;
 
-    public Div createLayout() {
-        Div layout = new Div();
-        layout.setSizeFull();
+	public Div createLayout() {
+		Div layout = new Div();
+		layout.setSizeFull();
 
-        // Create and add the filter layout
-        HorizontalLayout filtersLayout = createFilterLayout();
+		// Create and add the filter layout
+		HorizontalLayout filtersLayout = createFilterLayout();
 
-        // Table to display report data
-        caresGrid = new Grid<>(CaresForm.class);
-        caresGrid.setSizeFull();
-        caresGrid.setColumns("visitorName", "associatedStudent", "dateTimeOfVisit", "location", "reasonForVisit");
+		// Table to display report data
+		caresGrid = new Grid<>(CaresForm.class);
+		caresGrid.setSizeFull();
+		caresGrid.setColumns("visitorName", "studentFullname", "dateTimeOfVisit", "location", "reasonForVisit");
 
-        // Fetch data from the service and set it to the grid
-        currentItems = caresFormService.findAll();
-        caresGrid.setItems(currentItems);
+		// Fetch data from the service and set it to the grid
+		currentItems = caresFormService.findAll();
+		caresGrid.setItems(currentItems);
 
-        // Export Button
-        Button exportButton = new Button("Export Data", event -> GridExporter.newWithDefaults(this.caresGrid).open());
-        filtersLayout.add(exportButton);
+		// Export Button
+		Button exportButton = new Button("Export Data", event -> GridExporter.newWithDefaults(this.caresGrid).open());
+		filtersLayout.add(exportButton);
 
-        layout.add(filtersLayout, caresGrid);
-        layout.getStyle().set("background-color", "#f9f9f9");
+		layout.add(filtersLayout, caresGrid);
+		layout.getStyle().set("background-color", "#f9f9f9");
 
-        return layout;
-    }
+		return layout;
+	}
 
-    private HorizontalLayout createFilterLayout() {
-        HorizontalLayout filtersLayout = new HorizontalLayout();
-        filtersLayout.setWidthFull();
+	private HorizontalLayout createFilterLayout() {
+		HorizontalLayout filtersLayout = new HorizontalLayout();
+		filtersLayout.setWidthFull();
 
-        ComboBox<String> locationFilter = new ComboBox<>("Location");
-        List<CaresFormLocation> locations = locationService.getAllLocations();
-        List<String> locationNames = locations.stream().map(CaresFormLocation::getName).collect(Collectors.toList());
-        locationFilter.setItems(locationNames);
-        locationFilter.setPlaceholder("Select Location");
+		ComboBox<String> locationFilter = new ComboBox<>("Location");
+		List<CaresFormLocation> locations = locationService.getAllLocations();
+		List<String> locationNames = locations.stream().map(CaresFormLocation::getName).collect(Collectors.toList());
+		locationFilter.setItems(locationNames);
+		locationFilter.setPlaceholder("Select Location");
 
-        ComboBox<CaresFormReason> reasonFilter = new ComboBox<>("Reason for Visit");
-        List<CaresFormReason> reasons = reasonService.getAllReasons();
-        reasonFilter.setItems(reasons);
-        reasonFilter.setPlaceholder("Select Reason");
+		ComboBox<CaresFormReason> reasonFilter = new ComboBox<>("Reason for Visit");
+		List<CaresFormReason> reasons = reasonService.getAllReasons();
+		reasonFilter.setItems(reasons);
+		reasonFilter.setPlaceholder("Select Reason");
 
-        DatePicker startDate = new DatePicker("Start Date");
-        DatePicker endDate = new DatePicker("End Date");
+		DatePicker startDate = new DatePicker("Start Date");
+		DatePicker endDate = new DatePicker("End Date");
 
-        Button applyFiltersButton = new Button("Apply Filters", event -> {
-            // Retrieve selected filter values
-            String selectedLocation = locationFilter.getValue();
-            CaresFormReason selectedReason = reasonFilter.getValue();
-            LocalDate start = startDate.getValue();
-            LocalDate end = endDate.getValue();
+		Button applyFiltersButton = new Button("Apply Filters", event -> {
+			// Retrieve selected filter values
+			String selectedLocation = locationFilter.getValue();
+			CaresFormReason selectedReason = reasonFilter.getValue();
+			LocalDate start = startDate.getValue();
+			LocalDate end = endDate.getValue();
 
-            // Fetch all forms and apply filters
-            currentItems = caresFormService.findAll().stream()
-                    .filter(form -> (selectedLocation == null
-                            || (form.getLocation() != null && selectedLocation.equals(form.getLocation().getName()))))
-                    .filter(form -> (selectedReason == null
-                            || (form.getReasonForVisit() != null && selectedReason.equals(form.getReasonForVisit()))))
-                    .filter(form -> (start == null || (form.getDateTimeOfVisit() != null
-                            && !form.getDateTimeOfVisit().toLocalDate().isBefore(start))))
-                    .filter(form -> (end == null || (form.getDateTimeOfVisit() != null
-                            && !form.getDateTimeOfVisit().toLocalDate().isAfter(end))))
-                    .collect(Collectors.toList());
+			// Fetch all forms and apply filters
+			currentItems = caresFormService.findAll().stream()
+					.filter(form -> (selectedLocation == null
+							|| (form.getLocation() != null && selectedLocation.equals(form.getLocation().getName()))))
+					.filter(form -> (selectedReason == null
+							|| (form.getReasonForVisit() != null && selectedReason.equals(form.getReasonForVisit()))))
+					.filter(form -> (start == null || (form.getDateTimeOfVisit() != null
+							&& !form.getDateTimeOfVisit().toLocalDate().isBefore(start))))
+					.filter(form -> (end == null || (form.getDateTimeOfVisit() != null
+							&& !form.getDateTimeOfVisit().toLocalDate().isAfter(end))))
+					.collect(Collectors.toList());
 
-            // Update grid with filtered data
-            caresGrid.setItems(currentItems);
+			// Update grid with filtered data
+			caresGrid.setItems(currentItems);
 
-            // Show notification if no data matches the filters
-            if (currentItems.isEmpty()) {
-                Notification.show("No matching results found.", 3000, Notification.Position.MIDDLE);
-            }
-        });
+			// Show notification if no data matches the filters
+			if (currentItems.isEmpty()) {
+				Notification.show("No matching results found.", 3000, Notification.Position.MIDDLE);
+			}
+		});
 
-        Button clearFiltersButton = new Button("Clear Filters", e -> {
-            locationFilter.clear();
-            reasonFilter.clear();
-            startDate.clear();
-            endDate.clear();
-            // Reset grid to show all items
-            currentItems = caresFormService.findAll();
-            caresGrid.setItems(currentItems);
-        });
+		Button clearFiltersButton = new Button("Clear Filters", e -> {
+			locationFilter.clear();
+			reasonFilter.clear();
+			startDate.clear();
+			endDate.clear();
+			// Reset grid to show all items
+			currentItems = caresFormService.findAll();
+			caresGrid.setItems(currentItems);
+		});
 
-        filtersLayout.add(locationFilter, reasonFilter, startDate, endDate, applyFiltersButton, clearFiltersButton);
-        return filtersLayout;
-    }
+		filtersLayout.add(locationFilter, reasonFilter, startDate, endDate, applyFiltersButton, clearFiltersButton);
+		return filtersLayout;
+	}
 
-    protected byte[] generateExcel(CaresForm item) {
-        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            var sheet = workbook.createSheet("Report");
-            var headerRow = sheet.createRow(0);
-            headerRow.createCell(0).setCellValue("Visitor Name");
-            headerRow.createCell(1).setCellValue("Associated Student");
-            headerRow.createCell(2).setCellValue("Date Time of Visit");
-            headerRow.createCell(3).setCellValue("PRTF/CARES School");
-            headerRow.createCell(4).setCellValue("Reason for Visit");
+	protected byte[] generateExcel(CaresForm item) {
+		try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+			var sheet = workbook.createSheet("Report");
+			var headerRow = sheet.createRow(0);
+			headerRow.createCell(0).setCellValue("Visitor Name");
+			headerRow.createCell(1).setCellValue("Associated Student");
+			headerRow.createCell(2).setCellValue("Date Time of Visit");
+			headerRow.createCell(3).setCellValue("PRTF/CARES School");
+			headerRow.createCell(4).setCellValue("Reason for Visit");
 
-            var dataRow = sheet.createRow(1);
-            dataRow.createCell(0).setCellValue(item.getVisitorName());
-            dataRow.createCell(1).setCellValue(
-                    (item.getAssociatedStudent().getLastName() + ", " + item.getAssociatedStudent().getFirstName()));
-            dataRow.createCell(2).setCellValue(item.getDateTimeOfVisit().toString());
-            dataRow.createCell(3).setCellValue(item.getLocation().toString());
-            dataRow.createCell(4).setCellValue(item.getReasonForVisit().toString());
+			var dataRow = sheet.createRow(1);
+			dataRow.createCell(0).setCellValue(item.getVisitorName());
+			dataRow.createCell(1).setCellValue((item.getStudentFullname()));
+			dataRow.createCell(2).setCellValue(item.getDateTimeOfVisit().toString());
+			dataRow.createCell(3).setCellValue(item.getLocation().toString());
+			dataRow.createCell(4).setCellValue(item.getReasonForVisit().toString());
 
-            workbook.write(out);
-            return out.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+			workbook.write(out);
+			return out.toByteArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-    @Override
-    protected String getItemId(CaresForm item) {
-        return item.getId().toString();
-    }
+	@Override
+	protected String getItemId(CaresForm item) {
+		return item.getId().toString();
+	}
 
-    @Override
-    protected byte[] generateExcel(List<CaresForm> items) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	protected byte[] generateExcel(List<CaresForm> items) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
