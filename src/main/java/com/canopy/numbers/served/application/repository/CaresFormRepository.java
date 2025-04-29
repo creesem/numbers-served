@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import com.canopy.numbers.served.application.data.CaresForm;
 import com.canopy.numbers.served.application.data.CaresFormLocation;
 import com.canopy.numbers.served.application.data.CaresFormReason;
-import com.canopy.numbers.served.application.data.NumbersServedStudent;
 
 @Repository
 public interface CaresFormRepository extends JpaRepository<CaresForm, Long> {

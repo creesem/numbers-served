@@ -29,7 +29,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @Route(value = "prtf-form", layout = NoNavLayout.class)
 @PageTitle("PTRF Check-in")
 @AnonymousAllowed
-public class TcsFormView extends VerticalLayout {
+public class PRTFFormView extends VerticalLayout {
 	private static final long serialVersionUID = -2250637917523294052L;
 	private final TextField associatedStudent;
 	private final PTRFFormService tcsFormService;
@@ -38,7 +38,7 @@ public class TcsFormView extends VerticalLayout {
 	private final TextField otherReasonField; // Field for custom reason
 
 	@Autowired
-	public TcsFormView(PTRFFormService tcsFormService, NumbersServedStudentService numbersServedStudentService,
+	public PRTFFormView(PTRFFormService tcsFormService, NumbersServedStudentService numbersServedStudentService,
 			CaresFormReasonService caresFormReasonService, CaresFormLocationService caresFormLocationService) {
 		// Create form components
 		this.tcsFormService = tcsFormService;
@@ -98,7 +98,7 @@ public class TcsFormView extends VerticalLayout {
 		buttonLayout.setSpacing(true);
 
 		// Title
-		H2 title = new H2("TCS Check-in");
+		H2 title = new H2("PRTF Check-in");
 		title.getStyle().set("text-align", "center");
 
 		VerticalLayout formContainer = new VerticalLayout();
