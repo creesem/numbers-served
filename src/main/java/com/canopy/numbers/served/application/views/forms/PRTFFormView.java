@@ -98,7 +98,7 @@ public class PRTFFormView extends VerticalLayout {
 		buttonLayout.setSpacing(true);
 
 		// Title
-		H2 title = new H2("PRTF Check-in");
+		H2 title = new H2("The CARES School Check-in");
 		title.getStyle().set("text-align", "center");
 
 		VerticalLayout formContainer = new VerticalLayout();
