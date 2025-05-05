@@ -98,7 +98,7 @@ public class CaresFormView extends VerticalLayout {
 		formContainer.getStyle().set("background-color", "#fff");
 
 		// Title
-		H2 title = new H2("The Canopy School Check-in");
+		H2 title = new H2("CARES Check-in");
 		title.getStyle().set("text-align", "center");
 
 		// Add components to form container

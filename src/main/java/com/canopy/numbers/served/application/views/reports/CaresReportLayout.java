@@ -97,7 +97,7 @@ public class CaresReportLayout extends DownloadGridView<CaresForm> {
 			// Fetch all forms and apply filters
 			currentItems = caresFormService.findAll().stream()
 					.filter(form -> (selectedLocation == null
-							|| (form.getLocation() != null && selectedLocation.equals(form.getLocation().getName()))))
+							|| (form.getLocation() != null&& selectedLocation.equals(form.getLocation().getName()))))
 					.filter(form -> (selectedReason == null
 							|| (form.getReasonForVisit() != null && selectedReason.equals(form.getReasonForVisit()))))
 					.filter(form -> (start == null || (form.getDateTimeOfVisit() != null
