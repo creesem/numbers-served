@@ -20,9 +20,12 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import software.xdev.vaadin.grid_exporter.GridExporter;
 
@@ -43,17 +46,38 @@ public class CaresReportLayout extends DownloadGridView<CaresForm> {
 	private Grid<CaresForm> caresGrid;
 	private List<CaresForm> currentItems;
 
-	public Div createLayout() {
-		Div layout = new Div();
+	public VerticalLayout createLayout() {
+
+		Div filterCard = new Div();
+		filterCard.getStyle().set("padding", "1rem").set("border", "1px solid #e0e0e0").set("border-radius", "8px")
+				.set("background-color", "#ffffff").set("box-shadow", "0 2px 4px rgba(0, 0, 0, 0.05)");
+
+		VerticalLayout layout = new VerticalLayout();
 		layout.setSizeFull();
+		layout.setPadding(true);
+		layout.setSpacing(true);
+		layout.getStyle().set("background-color", "#f9f9f9");
 
 		// Create and add the filter layout
 		HorizontalLayout filtersLayout = createFilterLayout();
 
 		// Table to display report data
 		caresGrid = new Grid<>(CaresForm.class);
-		caresGrid.setSizeFull();
-		caresGrid.setColumns("visitorName", "studentFullname", "dateTimeOfVisit", "location", "reasonForVisit");
+		/*
+		 * caresGrid.setSizeFull(); caresGrid.setColumns("visitorName",
+		 * "studentFullname", "dateTimeOfVisit", "location", "reasonForVisit");
+		 */
+
+		caresGrid.removeAllColumns();
+		caresGrid.addColumn(CaresForm::getVisitorName).setHeader("Visitor Name");
+		caresGrid.addColumn(CaresForm::getStudentFullname).setHeader("Student Fullname");
+		caresGrid.addColumn(form -> form.getDateTimeOfVisit().toString()).setHeader("Date Time of Visit");
+		caresGrid.addColumn(form -> form.getLocation() != null ? form.getLocation().getName() : "")
+				.setHeader("Location");
+		caresGrid.addColumn(form -> form.getReasonForVisit() != null ? form.getReasonForVisit().toString() : "")
+				.setHeader("Reason for Visit");
+
+		caresGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES, GridVariant.LUMO_WRAP_CELL_CONTENT);
 
 		// Fetch data from the service and set it to the grid
 		currentItems = caresFormService.findAll();
@@ -61,6 +85,7 @@ public class CaresReportLayout extends DownloadGridView<CaresForm> {
 
 		// Export Button
 		Button exportButton = new Button("Export Data", event -> GridExporter.newWithDefaults(this.caresGrid).open());
+		exportButton.setIcon(VaadinIcon.DOWNLOAD.create());
 		filtersLayout.add(exportButton);
 
 		layout.add(filtersLayout, caresGrid);
@@ -97,7 +122,7 @@ public class CaresReportLayout extends DownloadGridView<CaresForm> {
 			// Fetch all forms and apply filters
 			currentItems = caresFormService.findAll().stream()
 					.filter(form -> (selectedLocation == null
-							|| (form.getLocation() != null&& selectedLocation.equals(form.getLocation().getName()))))
+							|| (form.getLocation() != null && selectedLocation.equals(form.getLocation().getName()))))
 					.filter(form -> (selectedReason == null
 							|| (form.getReasonForVisit() != null && selectedReason.equals(form.getReasonForVisit()))))
 					.filter(form -> (start == null || (form.getDateTimeOfVisit() != null
@@ -124,6 +149,9 @@ public class CaresReportLayout extends DownloadGridView<CaresForm> {
 			currentItems = caresFormService.findAll();
 			caresGrid.setItems(currentItems);
 		});
+
+		applyFiltersButton.setIcon(VaadinIcon.FILTER.create());
+		clearFiltersButton.setIcon(VaadinIcon.CLOSE_CIRCLE.create());
 
 		filtersLayout.add(locationFilter, reasonFilter, startDate, endDate, applyFiltersButton, clearFiltersButton);
 		return filtersLayout;

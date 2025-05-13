@@ -24,7 +24,7 @@ public class ReportsView extends VerticalLayout {
 		reportTabs.setWidthFull();
 
 		// Create containers for content
-		Div caresContent = caresReportLayout.createLayout();
+		VerticalLayout caresContent = caresReportLayout.createLayout();
 		Div tcsContent = tcsReportLayout.createLayout();
 
 		// Wrap the content in a layout
