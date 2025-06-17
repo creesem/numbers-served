@@ -19,7 +19,7 @@ public class ReportsView extends VerticalLayout {
 
 		// Create tabs for CARES and TCS reports
 		Tab caresTab = new Tab("CARES Report");
-		Tab ptrfTab = new Tab("PTRF Report");
+		Tab ptrfTab = new Tab("TCS Reports");
 		Tabs reportTabs = new Tabs(caresTab, ptrfTab);
 		reportTabs.setWidthFull();
 

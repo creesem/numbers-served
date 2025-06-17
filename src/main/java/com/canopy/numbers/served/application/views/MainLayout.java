@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
-import com.canopy.numbers.served.application.data.User;
-import com.canopy.numbers.served.application.security.AuthenticatedUser;
 import com.canopy.numbers.served.application.views.reports.NumbersServedStudentUploadView;
 import com.canopy.numbers.served.application.views.reports.ReportsView;
+import com.canopy.numbers.served.deprecated.AuthenticatedUser;
+import com.canopy.shared.data.User;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -79,6 +79,7 @@ public class MainLayout extends AppLayout {
 		nav.addItem(new SideNavItem("Reports", ReportsView.class, LineAwesomeIcon.CHART_PIE_SOLID.create()));
 		nav.addItem(new SideNavItem("Upload Students", NumbersServedStudentUploadView.class,
 				LineAwesomeIcon.UPLOAD_SOLID.create()));
+		nav.addItem(new SideNavItem("Admin", AdminView.class, LineAwesomeIcon.UPLOAD_SOLID.create()));
 
 		// Add link to the Upload View
 

@@ -1,7 +1,5 @@
 package com.canopy.numbers.served.application.security;
 
-import com.canopy.numbers.served.application.data.User;
-import com.canopy.numbers.served.application.data.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,31 +10,39 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+import com.canopy.numbers.served.deprecated.UserRepositoryDeprecated;
+import com.canopy.shared.data.User;
+
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserRepositoryDeprecated userRepository;
 
-    public UserDetailsServiceImpl(UserRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepositoryDeprecated userRepository) {
         this.userRepository = userRepository;
     }
 
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("No user present with username: " + username);
-        } else {
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getHashedPassword(),
-                    getAuthorities(user));
-        }
-    }
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    private static List<GrantedAuthority> getAuthorities(User user) {
-        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toList());
-
-    }
+	/*
+	 * @Override
+	 * 
+	 * @Transactional public UserDetails loadUserByUsername(String username) throws
+	 * UsernameNotFoundException { User user =
+	 * userRepository.findByUsername(username); if (user == null) { throw new
+	 * UsernameNotFoundException("No user present with username: " + username); }
+	 * else { return new
+	 * org.springframework.security.core.userdetails.User(user.getUsername(),
+	 * user.getHashedPassword(), getAuthorities(user)); } }
+	 * 
+	 * private static List<GrantedAuthority> getAuthorities(User user) { return
+	 * user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" +
+	 * role)) .collect(Collectors.toList());
+	 * 
+	 * }
+	 */
 
 }

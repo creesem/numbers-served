@@ -15,7 +15,7 @@ import com.vaadin.flow.theme.Theme;
  * and some desktop browsers.
  *
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.canopy.numbers.served", "com.canopy.shared"})
 @Theme(value = "numbers-served")
 public class Application extends SpringBootServletInitializer implements AppShellConfigurator {
 	private static final long serialVersionUID = -319468755450296587L;
