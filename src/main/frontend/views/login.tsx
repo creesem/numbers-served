@@ -10,7 +10,7 @@ export const config: ViewConfig = {
 
 const loginI18n: LoginI18n = {
   ...new LoginOverlayElement().i18n,
-  header: { title: 'Numbers Served Login', description: 'Contact IT for access', additionalInformation:'Contact IT for access' },
+  header: { title: 'Numbers Served Login', description: 'Contact IT for access' },
 };
 
 export default function LoginView() {
